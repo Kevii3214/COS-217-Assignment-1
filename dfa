@@ -1,0 +1,38 @@
+START (accept) <-- the start state
+    /: MAYBE COMMENT START
+    other: START
+    ': CHAR_START
+    ": STRING_START
+
+MAYBE_COMMENT_START (accept)
+    *: COMMENT_START
+    /: MAYBE_COMMENT_START
+    ': CHAR_START
+    ": STRING_START
+    other: START
+
+COMMENT_START (reject)
+    *: MAYBE_COMMENT_END
+    other: COMMENT_START
+
+MAYBE_COMMENT_END (reject)
+    *: MAYBE_COMMENT_END
+    other: COMMENT_START
+    /: START
+
+CHAR_START (accept)
+    \: CHAR_ESCAPE
+    ': START
+    other: CHAR_START
+
+CHAR_ESCAPE (accept)
+    other: CHAR_START
+
+STRING_START (accept)
+    \: STRING_ESCAPE
+    ": START
+    other: STRING_START
+
+STRING_ESCAPE (accept)
+    other: STRING_START
+
