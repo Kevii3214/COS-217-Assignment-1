@@ -9,7 +9,7 @@ enum Statetype {NORMAL, MAYBE_COMMENT_START, COMMENT_START,MAYBE_COMMENT_END, CH
 enum Statetype
 handleNormalState(int c) {
     enum Statetype state;
-    if (c== '/') {
+    if (c== '/' && c != EOF) { /* could be a comment as long as it's not the last char */
         /* replace char with nothing, must see if it's a comment first */
         state = MAYBE_COMMENT_START;
     } else if (c == '\'') {
@@ -31,16 +31,18 @@ handleMaybeCommentStartState(int c) {
     enum Statetype state;
     if (c == '/') { /* should put down another / since one is missing from earlier */
         state = MAYBE_COMMENT_START;
-        putchar(c);
+        putchar('/');
     } else if (c == '*') {
     /* comment marker found, replace with a space */
         state = COMMENT_START;
         putchar(' ');
     } else if (c == '\'') {
         state = CHAR_START;
+        putchar('/'); /* not a comment so put back removed / */
         putchar(c);
     } else if (c == '\"') {
         state = STRING_START;
+        putchar('/'); /* not a comment so put back removed / */
         putchar(c);
     }
     else {
@@ -71,7 +73,7 @@ handleMaybeCommentEndState(int c) {
         state = MAYBE_COMMENT_END;
     } else if (c == '/') { /*comment ends */
         state = NORMAL;
-    } else if (c == '\n') { // just in case for corner cases like there is a new line after *
+    } else if (c == '\n') { /* just in case for corner cases like there is a new line after * */
         state = COMMENT_START;
         putchar('\n');
     }
@@ -155,6 +157,7 @@ int main(void) {
     }
     if (state == NORMAL ||state == MAYBE_COMMENT_START || state == CHAR_START || state == CHAR_ESCAPE || state == STRING_START || state == STRING_ESCAPE) {
         return 0;
+    } else {
+        return 1;
     }
-    return 1;
 }
