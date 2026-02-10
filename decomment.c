@@ -9,7 +9,7 @@ enum Statetype {NORMAL, MAYBE_COMMENT_START, COMMENT_START,MAYBE_COMMENT_END, CH
 enum Statetype
 handleNormalState(int c) {
     enum Statetype state;
-    if (c== '/' && c != EOF) { /* could be a comment as long as it's not the last char */
+    if (c== '/') { /* could be a comment as long as it's not the last char */
         /* replace char with nothing, must see if it's a comment first */
         state = MAYBE_COMMENT_START;
     } else if (c == '\'') {
@@ -126,8 +126,12 @@ handleStringEscapeState(int c) {
 
 int main(void) {
     int c;
+    int comment_start_line = 1;
     enum Statetype state = NORMAL;
     while ((c = getchar()) != EOF) {
+        if (c == '\n') {
+            comment_start_line++;
+        }
         switch (state) {
             case NORMAL:
                 state = handleNormalState(c);
@@ -161,6 +165,7 @@ int main(void) {
     if (state == NORMAL ||state == MAYBE_COMMENT_START || state == CHAR_START || state == CHAR_ESCAPE || state == STRING_START || state == STRING_ESCAPE) {
         return 0;
     } else {
+        fprintf(stderr, "Error: line %d: unterminated comment\n", comment_start_line);
         return 1;
     }
 }
