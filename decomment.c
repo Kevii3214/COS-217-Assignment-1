@@ -56,6 +56,9 @@ handleCommentStartState(int c) {
     enum Statetype state;
     if (c == '*') { /* remove just in case it is the end of comment */
         state = MAYBE_COMMENT_END;
+    } else if (c == '\n') { /* to handle multiline comments*/
+        state = COMMENT_START;
+        putchar('\n');
     } else { /* still in comment, keep putting down characters */
         state = COMMENT_START;
     }
@@ -68,7 +71,11 @@ handleMaybeCommentEndState(int c) {
         state = MAYBE_COMMENT_END;
     } else if (c == '/') { /*comment ends */
         state = NORMAL;
-    } else { /* false alarm, comment continues */
+    } else if (c == '\n') { // just in case for corner cases like there is a new line after *
+        state = COMMENT_START;
+        putchar('\n');
+    }
+    else { /* false alarm, comment continues */
         state = COMMENT_START;
     }
     return state;
