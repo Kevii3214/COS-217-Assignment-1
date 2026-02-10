@@ -160,12 +160,11 @@ int main(void) {
         }
     }
     if (state == MAYBE_COMMENT_START) {
-        putchar('/');
+        putchar('/'); /* to handle if / is at the end of a line and not a comment*/
     }   
-    if (state == NORMAL ||state == MAYBE_COMMENT_START || state == CHAR_START || state == CHAR_ESCAPE || state == STRING_START || state == STRING_ESCAPE) {
-        return 0;
-    } else {
+    if (state == COMMENT_START || state == MAYBE_COMMENT_END) {
         fprintf(stderr, "Error: line %d: unterminated comment\n", comment_start_line);
         return 1;
     }
+    return 0;
 }
