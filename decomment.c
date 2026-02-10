@@ -138,10 +138,12 @@ int main(void) {
                 state = handleNormalState(c);
                 break;
             case MAYBE_COMMENT_START:
+                if (c == '*') { /* true only when it is a comment start */
+                    comment_start_line = line_iterator; /* start of a comment so updates to be the line number of this*/
+                }
                 state = handleMaybeCommentStartState(c);
                 break;
             case COMMENT_START:
-                comment_start_line = line_iterator; /* start of a comment so updates to be the line number of this*/
                 state = handleCommentStartState(c);
                 break;
             case MAYBE_COMMENT_END:
