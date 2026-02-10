@@ -35,7 +35,7 @@ handleMaybeCommentStartState(int c) {
     } else if (c == '*') {
     // comment marker found, replace with a space
         state = COMMENT_START;
-        putchar(" ");
+        putchar(' ');
     } else if (c == '\'') {
         state = CHAR_START;
         putchar(c);
