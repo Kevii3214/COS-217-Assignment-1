@@ -126,11 +126,12 @@ handleStringEscapeState(int c) {
 
 int main(void) {
     int c;
-    int comment_start_line = 1;
+    int line_iterator = 1; /* meant to keep track of line number throughout code running*/
+    int comment_start_line = 1; /* will update to the start of a comment for error message*/
     enum Statetype state = NORMAL;
     while ((c = getchar()) != EOF) {
         if (c == '\n') {
-            comment_start_line++;
+            line_iterator++;
         }
         switch (state) {
             case NORMAL:
@@ -140,6 +141,7 @@ int main(void) {
                 state = handleMaybeCommentStartState(c);
                 break;
             case COMMENT_START:
+                comment_start_line = line_iterator; /* start of a comment so updates to be the line number of this*/
                 state = handleCommentStartState(c);
                 break;
             case MAYBE_COMMENT_END:
