@@ -128,9 +128,10 @@ handleCharStartState(int c) {
 enum Statetype
 handleCharEscapeState(int c) { 
     enum Statetype state;
+    state = CHAR_START;
     putchar(c); /* char escape so just put down whatever input and go 
     back to char */
-    return CHAR_START;
+    return state;
 }
 /* Implements the STRING_START state of the DFA. c is the current
    DFA character. Writes c to stdout. Return the next DFA state. */
@@ -153,9 +154,10 @@ handleStringStartState(int c) {
 enum Statetype
 handleStringEscapeState(int c) { 
     enum Statetype state;
+    state = STRING_START;
     putchar(c); /* char escape so just put down whatever input and 
     go back to string */
-    return STRING_START;
+    return state;
 }
 /* Reads text from stdin. Removes comments denoted by /*...*/ 
 /* and replaces it with a space. Write the result to stdout. 
