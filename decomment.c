@@ -155,11 +155,12 @@ handleStringEscapeState(int c) {
    message with the line number of the unterminated comment to stderr. 
    Returns 0 if there are no unterminated comments. */
 int main(void) {
+    /* character inputted from stdin*/
     int c;
-    int line_iterator = 1; /* meant to keep track of line number 
-    throughout code running*/
-    int comment_start_line = 1; /* will update to the start of a 
-    comment for error message*/
+    /* meant to keep track of line number throughout code running*/
+    int line_iterator = 1; 
+    /* will update to the start of a comment for error message*/
+    int comment_start_line = 1; 
     /* Use a DFA approach. state is the current DFA state. */
     enum Statetype state = NORMAL;
     while ((c = getchar()) != EOF) {
