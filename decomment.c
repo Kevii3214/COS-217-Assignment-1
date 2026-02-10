@@ -155,6 +155,9 @@ int main(void) {
                 break;
         }
     }
+    if (state == MAYBE_COMMENT_START) {
+        putchar('/');
+    }   
     if (state == NORMAL ||state == MAYBE_COMMENT_START || state == CHAR_START || state == CHAR_ESCAPE || state == STRING_START || state == STRING_ESCAPE) {
         return 0;
     } else {
