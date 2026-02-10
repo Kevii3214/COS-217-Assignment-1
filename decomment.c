@@ -159,11 +159,11 @@ handleStringEscapeState(int c) {
     go back to string */
     return state;
 }
-/* Reads text from stdin. Removes comments denoted by /*...*/ 
-/* and replaces it with a space. Write the result to stdout. 
-   Returns 1 if there is an unterminated comment and prints an error 
-   message with the line number of the unterminated comment to stderr. 
-   Returns 0 if there are no unterminated comments. */
+/* Reads text from stdin. Removes comments and replaces it with a 
+   space. Write the result to stdout. Returns 1 if there is an 
+   unterminated comment and prints an error message with the line number
+   of the unterminated comment to stderr. Returns 0 if there are no 
+   unterminated comments. */
 int main(void) {
     /* character inputted from stdin*/
     int c;
