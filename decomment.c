@@ -12,6 +12,7 @@ enum Statetype {NORMAL, MAYBE_COMMENT_START, COMMENT_START,
 /* Implements the NORMAL state of the DFA. c is the current DFA 
    character. Writes c to stdout unless it is a / maybe beginning a 
    comment. Return the next DFA state. */
+enum Statetype
 handleNormalState(int c) {
     enum Statetype state;
      /* could be a comment as long as it's not the last char */
@@ -37,6 +38,7 @@ handleNormalState(int c) {
    DFA character. Writes c to stdout unless it is a * beginning a 
    comment. Writes / and c if it is a character not ' or ". Return the 
    next DFA state. */
+enum Statetype
 handleMaybeCommentStartState(int c) {
     enum Statetype state;
     if (c == '/') { 
@@ -70,6 +72,7 @@ handleMaybeCommentStartState(int c) {
 /* Implements the COMMENT_START state of the DFA. c is the current
    DFA character. Writes a new line to stdout if c is a new line. Return
    the next DFA state. */
+enum Statetype
 handleCommentStartState(int c) {
     enum Statetype state;
     if (c == '*') { /* could be the end of comment */
@@ -85,6 +88,7 @@ handleCommentStartState(int c) {
 /* Implements the MAYBE_COMMENT_END state of the DFA. c is the current
    DFA character. Writes a new line to stdout if c is a new line. Return
    the next DFA state. */
+enum Statetype
 handleMaybeCommentEndState(int c) {
     enum Statetype state;
     if (c == '*') { /* still possible to terminate comment, put down * 
@@ -104,6 +108,7 @@ handleMaybeCommentEndState(int c) {
 }
 /* Implements the CHAR_START state of the DFA. c is the current
    DFA character. Writes c to stdout. Return the next DFA state. */
+enum Statetype
 handleCharStartState(int c) {
     enum Statetype state;
     if (c == '\\') { /* escape char detected, next char doesn't mean 
@@ -120,6 +125,7 @@ handleCharStartState(int c) {
 }
 /* Implements the CHAR_ESCAPE state of the DFA. c is the current
    DFA character. Writes c to stdout. Return the CHAR_START state. */
+enum Statetype
 handleCharEscapeState(int c) { 
     enum Statetype state;
     putchar(c); /* char escape so just put down whatever input and go 
@@ -128,6 +134,7 @@ handleCharEscapeState(int c) {
 }
 /* Implements the STRING_START state of the DFA. c is the current
    DFA character. Writes c to stdout. Return the next DFA state. */
+enum Statetype
 handleStringStartState(int c) {
     enum Statetype state;
     if (c == '\\') { /* escape char detected, next char doesn't mean 
@@ -143,6 +150,7 @@ handleStringStartState(int c) {
 }
 /* Implements the STRING_ESCAPE state of the DFA. c is the current
    DFA character. Writes c to stdout. Return the STRING_START state. */
+enum Statetype
 handleStringEscapeState(int c) { 
     enum Statetype state;
     putchar(c); /* char escape so just put down whatever input and 
