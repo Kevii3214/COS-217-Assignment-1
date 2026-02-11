@@ -1,7 +1,7 @@
-/*--------------------------------------------------------------------*/
-/* decomment.c                                                        */
-/* Author: Kevin Tran                                                 */
-/*--------------------------------------------------------------------*/
+/*------------------------------------------------------------------*/
+/* decomment.c                                                      */
+/* Author: Kevin Tran                                               */
+/*------------------------------------------------------------------*/
 #include <stdio.h>
 #include <ctype.h>
 /* defines constants representing each state in the DFA */
@@ -34,10 +34,10 @@ handleNormalState(int c) {
     
     return state;
 }
-/* Implements the MAYBE_COMMENT_START state of the DFA. c is the current
-   DFA character. Writes c to stdout unless it is a * beginning a 
-   comment. Writes / and c if it is a character not ' or ". Return the 
-   next DFA state. */
+/* Implements the MAYBE_COMMENT_START state of the DFA. c is the 
+   current DFA character. Writes c to stdout unless it is a * 
+   beginning a comment. Writes / and c if it is a character not ' or 
+   ". Return the next DFA state. */
 enum Statetype
 handleMaybeCommentStartState(int c) {
     enum Statetype state;
@@ -70,8 +70,8 @@ handleMaybeCommentStartState(int c) {
     return state;
 }
 /* Implements the COMMENT_START state of the DFA. c is the current
-   DFA character. Writes a new line to stdout if c is a new line. Return
-   the next DFA state. */
+   DFA character. Writes a new line to stdout if c is a new line. 
+   Return the next DFA state. */
 enum Statetype
 handleCommentStartState(int c) {
     enum Statetype state;
@@ -86,18 +86,17 @@ handleCommentStartState(int c) {
     return state;
 }
 /* Implements the MAYBE_COMMENT_END state of the DFA. c is the current
-   DFA character. Writes a new line to stdout if c is a new line. Return
-   the next DFA state. */
+   DFA character. Writes a new line to stdout if c is a new line. 
+   Return the next DFA state. */
 enum Statetype
 handleMaybeCommentEndState(int c) {
     enum Statetype state;
-    if (c == '*') { /* still possible to terminate comment, put down * 
-        since we removed one earlier */
+    if (c == '*') { /* still possible to terminate comment */
         state = MAYBE_COMMENT_END;
-    } else if (c == '/') { /*comment ends */
+    } else if (c == '/') { /* comment ends */
         state = NORMAL;
-    } else if (c == '\n') { /* just in case for corner cases like there 
-        is a new line after * */
+    } else if (c == '\n') { /* just in case for corner cases like 
+        there is a new line after * */
         state = COMMENT_START;
         putchar('\n');
     }
@@ -150,26 +149,27 @@ handleStringStartState(int c) {
     return state;
 }
 /* Implements the STRING_ESCAPE state of the DFA. c is the current
-   DFA character. Writes c to stdout. Return the STRING_START state. */
+   DFA character. Writes c to stdout. Return the STRING_START state.*/
 enum Statetype
 handleStringEscapeState(int c) { 
     enum Statetype state;
     state = STRING_START;
-    putchar(c); /* char escape so just put down whatever input and 
+    /* String escape so just put down whatever input and 
     go back to string */
+    putchar(c); 
     return state;
 }
 /* Reads text from stdin. Removes comments and replaces it with a 
    space. Write the result to stdout. Returns 1 if there is an 
-   unterminated comment and prints an error message with the line number
-   of the unterminated comment to stderr. Returns 0 if there are no 
-   unterminated comments. */
+   unterminated comment and prints an error message with the line 
+   number of the unterminated comment to stderr. Returns 0 if there 
+   are no unterminated comments. */
 int main(void) {
-    /* character inputted from stdin*/
+    /* char inputted from stdin*/
     int c;
-    /* meant to keep track of line number throughout code running*/
+    /* meant to keep track of line number throughout code running */
     int line_iterator = 1; 
-    /* will update to the start of a comment for error message*/
+    /* will update to the start of a comment for error message */
     int comment_start_line = 1; 
     /* Use a DFA approach. state is the current DFA state. */
     enum Statetype state = NORMAL;
@@ -182,10 +182,11 @@ int main(void) {
                 state = handleNormalState(c);
                 break;
             case MAYBE_COMMENT_START:
-                if (c == '*') { /* true only when it is a comment 
-                    start */
-                    comment_start_line = line_iterator; /* start of 
-                    a comment so updates to be the line number of this*/
+                /* true only when it is a comment start */
+                if (c == '*') { 
+                    /* start of a comment so updates to be the 
+                    line number */
+                    comment_start_line = line_iterator; 
                 }
                 state = handleMaybeCommentStartState(c);
                 break;
@@ -210,8 +211,8 @@ int main(void) {
         }
     }
     if (state == MAYBE_COMMENT_START) {
-        putchar('/'); /* to handle if / is at the end of a line and 
-        not a comment*/
+        /* to handle if / is at the end of a line and not a comment*/
+        putchar('/'); 
     }   
     if (state == COMMENT_START || state == MAYBE_COMMENT_END) {
         fprintf(stderr, "Error: line %d: unterminated comment\n", 
